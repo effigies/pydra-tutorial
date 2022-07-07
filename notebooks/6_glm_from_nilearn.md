@@ -70,15 +70,10 @@ In this task, we do the following:
 
 ```{code-cell}
 @pydra.mark.task
-@pydra.mark.annotate(
-    {
-        'exclusion_patterns': list,
-        'n_subjects': int,
-        'return': {'data_dir': str},
-    }
-)
-def get_openneuro_dataset(exclusion_patterns, n_subjects):
-
+def get_openneuro_dataset(
+    exclusion_patterns: list[str],
+    n_subjects: int,
+) -> {'data_dir': str}:
     from nilearn.datasets import (
         fetch_openneuro_dataset_index,
         fetch_openneuro_dataset,
@@ -111,19 +106,13 @@ Those are inferred from the confounds.tsv files available in the BIDS dataset.
 
 ```{code-cell}
 @pydra.mark.task
-@pydra.mark.annotate(
-    {
-        'data_dir': str,
-        'task_label': str,
-        'space_label': str,
-        'derivatives_folder': str,
-        'smoothing_fwhm': float,
-        'return': {'model': ty.Any, 'imgs': list, 'subject': str},
-    }
-)
 def get_info_from_bids(
-    data_dir, task_label, space_label, smoothing_fwhm, derivatives_folder
-):
+    data_dir: str,
+    task_label: str,
+    space_label: str,
+    smoothing_fwhm: float,
+    derivatives_folder: str,
+) -> {'model': ty.Any, 'imgs': list[File], 'subject': str}:
     from nilearn.glm.first_level import first_level_from_bids
 
     (
@@ -159,11 +148,7 @@ This task does the following:
 
 ```{code-cell}
 @pydra.mark.task
-@pydra.mark.annotate(
-    {'data_dir': str, 'subject': str, 'return': {'dm_path': str}}
-)
-def get_designmatrix(data_dir, subject):
-
+def get_designmatrix(data_dir: str, subject: str) -> {'dm_path': File}:
     from nilearn.interfaces.fsl import get_design_from_fslmat
 
     fsl_design_matrix_path = os.path.join(
@@ -198,16 +183,12 @@ What we are doing here is:
 
 ```{code-cell}
 @pydra.mark.task
-@pydra.mark.annotate(
-    {
-        'model': ty.Any,
-        'imgs': ty.Any,
-        'dm_path': ty.Any,
-        'contrast': str,
-        'return': {'model': ty.Any, 'z_map_path': str, 'masker': ty.Any},
-    }
-)
-def model_fit(model, imgs, dm_path, contrast):
+def model_fit(
+    model: ty.Any,
+    imgs: list[File],
+    dm_path: File,
+    contrast: str,
+) -> {'model': ty.Any, 'z_map_path': str, 'masker': ty.Any}:
     import pandas as pd
 
     design_matrix = pd.read_csv(dm_path)
@@ -226,8 +207,7 @@ For publication purposes, we obtain a cluster table and a summary report.
 
 ```{code-cell}
 @pydra.mark.task
-@pydra.mark.annotate({'z_map_path': str, 'return': {'output_file': str}})
-def cluster_table(z_map_path):
+def cluster_table(z_map_path: File) -> {'output_file': File}:
     import nibabel as nib
     from nilearn.reporting import get_clusters_table
     from scipy.stats import norm
@@ -243,10 +223,10 @@ def cluster_table(z_map_path):
 
 # get glm report
 @pydra.mark.task
-@pydra.mark.annotate(
-    {'model': ty.Any, 'contrasts': str, 'return': {'output_file': str}}
-)
-def glm_report(model, contrasts):
+def glm_report(
+    model: ty.Any,
+    contrasts: str,
+) -> {'output_file': str}:
     from nilearn.reporting import make_glm_report
 
     output_file = os.path.join(workflow_out_dir, 'glm_report.html')
@@ -267,30 +247,19 @@ You can also seperate this task into multiple sub-tasks. But it makes more sense
 
 ```{code-cell}
 @pydra.mark.task
-@pydra.mark.annotate(
-    {
-        'data_dir': str,
-        'dm_path': str,
-        'z_map_path': str,
-        'contrast': str,
-        'subject': str,
-        'masker': ty.Any,
-        'return': {
-            'output_file1': str,
-            'output_file2': str,
-            'output_file3': str,
-            'output_file4': str,
-        },
-    }
-)
 def plots(
-    data_dir,
-    dm_path,
-    z_map_path,
-    contrast,
-    subject,
-    masker,
-):
+    data_dir: str,
+    dm_path: File,
+    z_map_path: File,
+    contrast: str,
+    subject: str,
+    masker: ty.Any,
+) -> {
+    'output_file1': str,
+    'output_file2': str,
+    'output_file3': str,
+    'output_file4': str,
+}:
     import pandas as pd
     import nibabel as nib
     from nilearn.plotting import (
