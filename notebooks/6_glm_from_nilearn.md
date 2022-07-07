@@ -18,10 +18,10 @@ In this tutorial, we will go through a simple workflow of the first level genera
 This tutorial is based on the [Nilearn GLM tutorial](https://nilearn.github.io/stable/auto_examples/04_glm_first_level/plot_bids_features.html#sphx-glr-auto-examples-04-glm-first-level-plot-bids-features-py).
 
 ```{code-cell}
-import nest_asyncio
-```
+:tags: [remove-cell]
 
-```{code-cell}
+import nest_asyncio
+
 nest_asyncio.apply()
 ```
 
