@@ -31,11 +31,12 @@ Import packages that will be used globally and set up output directory
 
 ```{code-cell}
 import os
+import typing as ty
+from pathlib import Path
+
 import pydra
 from pydra import Workflow
 from pydra.engine.specs import File
-import typing as ty
-from pathlib import Path
 
 # get current directory
 pydra_tutorial_dir = os.path.dirname(os.getcwd())
