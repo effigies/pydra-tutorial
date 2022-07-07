@@ -11,11 +11,7 @@ kernelspec:
   name: python3
 ---
 
-+++ {"tags": []}
-
 # 6. First level GLM
-
-+++
 
 In this tutorial, we will go through a simple workflow of the first level general linear modeling with a BIDS dataset from openneuro. This analysis is only performed on **one** subject.
 
@@ -28,8 +24,6 @@ import nest_asyncio
 ```{code-cell}
 nest_asyncio.apply()
 ```
-
-+++ {"tags": []}
 
 ## Preparation
 
@@ -54,8 +48,6 @@ workflow_out_dir = workflow_dir / '6_glm'
 os.makedirs(workflow_out_dir, exist_ok=True)
 ```
 
-+++ {"tags": []}
-
 ## Create tasks
 
 In this section, we converte major steps into tasks.
@@ -64,8 +56,6 @@ Each pydra task can have multiple python functions. We recommand to put those lo
 It is very **important** to keep in mind what adjacent tasks of your current task will be.
 1. Your previous task will decide your arguments in the current task
 2. Your next task will be impacted by the returns in the current task
-
-+++
 
 ### fetch openneuro BIDS dataset
 
@@ -366,8 +356,6 @@ def plots(
     return output_file1, output_file2, output_file3, output_file4
 ```
 
-+++ {"tags": []}
-
 ## Make a workflow from tasks
 
 Now we have created all tasks we need for this first level analysis, and there are two choices for our next step.
@@ -455,8 +443,6 @@ wf_firstlevel.set_output(
 )
 ```
 
-+++ {"tags": []}
-
 ## The overaching workflow
 
 Connect other tasks and the above workflow into one
@@ -538,15 +524,9 @@ results = wf.result()
 print(results)
 ```
 
-+++ {"tags": []}
-
 ## Visualization
 
-+++
-
 If you arrive here without any errors, yay, you just made your first pydra workflow for a first-level GLM!
-
-+++
 
 ## Examine folder structure
 
@@ -559,8 +539,6 @@ Let's take a look at what you have got.
 ```
 
 ### Plot figures
-
-+++
 
 #### First level contrast
 
@@ -596,11 +574,7 @@ Image(filename='../outputs/6_glm/fsl_z_map.jpg')
 Image(filename='../outputs/6_glm/nilearn_fsl_comp.jpg')
 ```
 
-+++ {"tags": []}
-
 ## Exercise
-
-+++
 
 What if we need to run the first-level GLM on multiple subject? We will need the `splitter`.
 
