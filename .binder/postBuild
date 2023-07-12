@@ -1,0 +1,4 @@
+set -ex
+
+mkdir -p ${HOME}/.jupyter
+cp -r .binder/labconfig ${HOME}/.jupyter/
